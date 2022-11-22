@@ -32,43 +32,46 @@ defmodule Kon.Bot do
 
   @impl true
   def handle_info(:check, %{bot_key: key, last_seen: last_seen} = state) do
-      state =
+    state =
       key
       |> Telegram.Api.request("getUpdates", offset: last_seen + 1, timeout: 30)
       |> case do
-          # empty, timeout, state returned unchanged
-          {:ok, []} -> state
-          # a response with content
-          {:ok, updates} -> handle_updates(updates, last_seen)
+        # empty, timeout, state returned unchanged
+        {:ok, []} ->
+          state
+
+        # a response with content
+        {:ok, updates} ->
+          handle_updates(updates, last_seen)
 
           # update last_seen state so we only get new updates
           %{state | last_seen: last_seen}
       end
 
-      # re-trigger the loop behavior
-      next_loop()
-      {:noreply, state}
+    # re-trigger the loop behavior
+    next_loop()
+    {:noreply, state}
   end
 
   ## private functions
 
   defp handle_updates(updates, last_seen) do
-      updates
-      # process updates
-      |> Enum.map(fn update ->
-        Logger.info("update received: #{inspect(update)}")
-        broadcast(update)
+    updates
+    # process updates
+    |> Enum.map(fn update ->
+      Logger.info("update received: #{inspect(update)}")
+      broadcast(update)
 
-        update["update_id"]
-      end)
-      |> Enum.max(fn -> last_seen end)
+      update["update_id"]
+    end)
+    |> Enum.max(fn -> last_seen end)
   end
 
   defp broadcast(update) do
-      Phoenix.PubSub.broadcast!(Kon.PubSub, "bot_update", {:update, update})
+    Phoenix.PubSub.broadcast!(Kon.PubSub, "bot_update", {:update, update})
   end
 
   defp next_loop do
-      Process.send_after(self(), :check, 5000)
+    Process.send_after(self(), :check, 5000)
   end
 end
