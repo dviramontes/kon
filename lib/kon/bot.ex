@@ -33,8 +33,7 @@ defmodule Kon.Bot do
   @impl true
   def handle_info(:check, %{bot_key: key, last_seen: last_seen} = state) do
     state =
-      key
-      |> Telegram.Api.request("getUpdates", offset: last_seen + 1, timeout: 30)
+      Telegram.Api.request(key, "getUpdates", offset: last_seen + 1, timeout: 30)
       |> case do
         # empty, timeout, state returned unchanged
         {:ok, []} ->
