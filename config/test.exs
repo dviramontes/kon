@@ -6,12 +6,12 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :kon, Kon.Repo,
-       adapter: Ecto.Adapters.SQLite3,
-       database: "./db/test.sqlite"
+  adapter: Ecto.Adapters.SQLite3,
+  database: "./db/test.sqlite"
 
 config :my_app, MyApp.Repo,
-       adapter: Ecto.Adapters.SQLite3,
-       database: "/path/to/sqlite/database"
+  adapter: Ecto.Adapters.SQLite3,
+  database: "/path/to/sqlite/database"
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

@@ -15,9 +15,11 @@ defmodule Kon.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Kon.PubSub},
       # Start the Endpoint (http/https)
-      KonWeb.Endpoint
+      KonWeb.Endpoint,
       # Start a worker by calling: Kon.Worker.start_link(arg)
       # {Kon.Worker, arg}
+      # Bot GenServer
+      {Kon.Bot, bot_key: System.get_env("TELEGRAM_BOT_SECRET")}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

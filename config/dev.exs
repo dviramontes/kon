@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :kon, Kon.Repo,
-       adapter: Ecto.Adapters.SQLite3,
-       database: "./db/dev.sqlite"
+  adapter: Ecto.Adapters.SQLite3,
+  database: "./db/dev.sqlite"
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
